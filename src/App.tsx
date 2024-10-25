@@ -10,7 +10,7 @@ function App() {
         функцію, але з різною інформацією*/}
 
             {/*щоб зробити description необхідно зробити теги подвійними і зробити опис всередині*/}
-            {/**/}
+            {/*це*/}
             <Character name ={'Bart'}
                 image={'https://upload.wikimedia.org/wikipedia/uk/a/aa/Bart_simpson.png'}
             >
