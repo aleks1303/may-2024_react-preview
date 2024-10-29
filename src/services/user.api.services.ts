@@ -27,7 +27,6 @@ axiosInstance.interceptors.request.use(interceptedRequest => {
     return interceptedRequest
 })
 
-
 // тепер робимо запит на основі axiosInstance
 
 const getUsers = (): Promise<AxiosResponse<IUser[]>> => {
