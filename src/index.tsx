@@ -6,6 +6,7 @@ import MainLayout from "./layouts/MainLayout";
 import AboutPage from "./pages/about/AboutPage";
 import ContactsPage from "./pages/contacts/ContactsPage";
 import ErrorLayout from "./layouts/error/ErrorLayout";
+import SingleContactPage from "./pages/contact/SingleContactPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -35,6 +36,11 @@ const browserRouter = createBrowserRouter([
         children:[
             {path:'about', element:<AboutPage/>},
             {path:'contacts', element:<ContactsPage/>},
+
+
+        //     branch: with params
+        //     створюємо додаткові параметри для contacts
+            {path:'contacts/:id', element:<SingleContactPage/>},
 
         // Тут зробимо текст за замовчування
         // це для того, щоб відображалась якась інфо до того, як клікнути на about or contacts
