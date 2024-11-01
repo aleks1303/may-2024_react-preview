@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from "react-router-dom";
+import {IUserContactModel} from "../../models/IUserContactModel";
+import {userApiService} from "../../services/api.service";
+import {useAppLocation} from "../../components/hucks/useAppLocation";
 
 
 // щоб відхопити параметри які у вас є
@@ -16,19 +19,18 @@ const SingleContactPage = () => {
     // використовуємо хук useLocation в середині якого буде об'єкт state
     // з якого можна витягнути інформацію
     // це робиться для того, щоб в ContactsComponent не робити зайвий запит на fetch
-    const {state:{contact:item}} = useLocation();
-    console.log(item)
+    const {state:{contact:item}} = useAppLocation <{contact:IUserContactModel}>();
 
-    const [contact, setContact] = useState<any>({})
+    const [contact, setContact] = useState<IUserContactModel | null>(null)
     useEffect(() => {
         if (item){
             setContact(item)
+        } else if (id){
+            userApiService
+                .getUserById(id)
+                .then(value => setContact(value.data))
         } else{
-            fetch('https://jsonplaceholder.typicode.com/users/'+ id)
-                .then((value) => value.json())
-                .then(value => {
-                    setContact(value)
-                });
+            throw new Error('I fucker up')
         }
 
     }, [id, item]);
@@ -36,7 +38,7 @@ const SingleContactPage = () => {
 
     return (
         <div>
-            {contact.name} - {contact.username}
+            {contact && <>{contact.name} - {contact.username}</>}
         </div>
     );
 };
