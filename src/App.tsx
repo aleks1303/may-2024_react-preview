@@ -18,7 +18,6 @@ const App: FC = () => {
       console.log('!!!')
     }
   }, [x]);
-
   return (
     <div>
         <button onClick={()=>{
