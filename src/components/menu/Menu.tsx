@@ -25,5 +25,4 @@ const Menu:FC<MenuTypeProps> = ({icon}) => {
         </div>
     );
 };
-
 export default Menu;
