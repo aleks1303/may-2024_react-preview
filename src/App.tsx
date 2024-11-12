@@ -18,7 +18,7 @@ import {type} from "node:os";
 
 // state буде змінюватись
 
-const reduserActions = (state:number, action:{type:string, payload:number }) =>{
+const reducerActions = (state:number, action:{type:string, payload:number }) =>{
   switch (action.type){
     case 'add':
       return state + action.payload;
@@ -32,7 +32,7 @@ return state
 }
 
 const App: FC = () => {
-  const [number, dispatch] = useReducer(reduserActions,0)
+  const [number, dispatch] = useReducer(reducerActions,0)
   const add = () =>{
     dispatch({type:'add', payload:10})
   }
