@@ -1,6 +1,5 @@
 import React, {FC, useReducer} from 'react';
 import './App.css';
-import {type} from "node:os";
 
 // useReducer - зменшувач
 // цей хук дозволяє пакувати купу різноманітних дій в одне місце
