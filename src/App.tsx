@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import './App.css';
+import Menu from "./components/menu/Menu";
+import User from "./components/user/User";
 
-function App() {
+
+// memo - дозволяє пропустити рірендерінг компонента, коли його пропси не змінюються
+
+const App: FC = () => {
+  const [id, setId] = useState<number>(1)
+  const incrementId = () =>{
+    setId(prevState => ++prevState)
+  }
   return (
-    <div>
-
-    </div>
+    <>
+      <Menu/>
+      <User id={id}/>
+      <button onClick={incrementId}>increment id</button>
+    </>
   );
 }
 
