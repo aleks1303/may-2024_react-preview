@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import './App.css';
+import UserComponent from "./components/UserComponent";
 
-function App() {
+const App: FC = () => {
   return (
     <div>
-
+        <UserComponent/>
     </div>
   );
 }
