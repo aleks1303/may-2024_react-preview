@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import './App.css';
+import SomeComponent from "./components/SomeComponent";
 
-function App() {
+const App:FC = () => {
   return (
     <div>
-
+        <SomeComponent message={'hello Okten'}/>
     </div>
   );
 }
