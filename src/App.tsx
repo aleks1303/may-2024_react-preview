@@ -1,20 +1,47 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import './App.css';
 import HeaderComponent from "./components/HeaderComponent";
 import {Outlet} from "react-router-dom";
+import {MyContext} from "./context/ContextProvider";
+import UserPostsComponent from "./components/UserPostsComponent";
+import {IUserModel} from "./models/IUserModel";
+import {IPostModel} from "./models/IPostModel";
 import {postService, userService} from "./services/api.service";
 
-const App:FC = () => {
 
+// огортаємо нашу розмітку в MyContext
+// і тут можемо ділитися всіма компонентами
+// дані якими можна ділитися будуть знаходитись в props value
+
+
+const App: FC = () => {
+
+    const [users, setUsers] = useState<IUserModel[]>([])
+    const [posts, setPosts] = useState<IPostModel[]>([])
     useEffect(() => {
-        userService.getUsers().then(value => console.log(value.data))
-        postService.getPosts().then(value => console.log(value.data))
+        userService.getUsers().then(value => setUsers(value.data))
+        postService.getPosts().then(value => setPosts(value.data))
     }, []);
+
   return (
-    <div>
-        <HeaderComponent/>
-        <Outlet/>
-    </div>
+    <>
+        <MyContext.Provider value={
+            {
+                userStore: {
+                    allUsers:users
+            },
+               postStore:{
+                    allPosts:posts
+               }
+        }
+        }>
+            <HeaderComponent/>
+            <Outlet/>
+        </MyContext.Provider>
+
+
+
+    </>
   );
 }
 

@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link} from "react-router-dom";
+import {MyContext, useContextProvider} from "../context/ContextProvider";
 
 const HeaderComponent = () => {
+
+    // // цим передаємо в цей компонент дані
+    // // можна це зробити через свій власний hook
+    // const obj = useContext(MyContext);
+    // console.log(obj.userStore.allUsers)
+
+    // // передача через свій hook
+    // const obj = useContextProvider();
+    // console.log(obj.userStore.allUsers);
     return (
         <div>
             <ul>
