@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {UserWithPostsType} from "../models/UserWithPostsType";
-import PostsComponent from "./PostsComponent";
+
 interface IProps{
 items:UserWithPostsType[]
 }
