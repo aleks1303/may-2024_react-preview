@@ -1,11 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import UserPostsComponent from "../components/UserPostsComponent";
-import {useContextProvider} from "../context/ContextProvider";
+import {useStore} from "../context/store";
 import {UserWithPostsType} from "../models/UserWithPostsType";
+
 
 const UserPostsPage = () => {
 
-    const {userStore:{allUsers},postStore:{allPosts}} = useContextProvider();
+    const {userStore:{allUsers},postStore:{allPosts}} = useStore();
 
     const [userWithPostsState, setUserWithPostsState] = useState<UserWithPostsType[]>([])
     const usersWithPostsArray = useMemo(() =>  {
@@ -16,7 +17,6 @@ const UserPostsPage = () => {
     useEffect(() => {
         setUserWithPostsState(usersWithPostsArray)
     }, [usersWithPostsArray]);
-
 
     return (
         <div>

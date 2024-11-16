@@ -1,12 +1,9 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import './App.css';
 import HeaderComponent from "./components/HeaderComponent";
 import {Outlet} from "react-router-dom";
-import {MyContext} from "./context/ContextProvider";
-import UserPostsComponent from "./components/UserPostsComponent";
-import {IUserModel} from "./models/IUserModel";
-import {IPostModel} from "./models/IPostModel";
-import {postService, userService} from "./services/api.service";
+import {useStore} from "./context/store";
+import {userService} from "./services/api.service";
 
 
 // огортаємо нашу розмітку в MyContext
@@ -16,41 +13,18 @@ import {postService, userService} from "./services/api.service";
 
 const App: FC = () => {
 
-    const [users, setUsers] = useState<IUserModel[]>([])
-    const [posts, setPosts] = useState<IPostModel[]>([])
-    const [favoriteUserState, setFavoriteUserState] = useState<IUserModel | null>(null);
-
+   const {userStore,userStore:{favoriteUser}} = useStore();
     useEffect(() => {
-        userService.getUsers().then(value => setUsers(value.data))
-        postService.getPosts().then(value => setPosts(value.data))
+        userService.getUsers().then(value => userStore.loadUsers(value.data))
     }, []);
-
-    const setFavoriteUser = (obj:IUserModel) =>{
-        setFavoriteUserState(obj)
-
-    }
 
   return (
     <>
         <HeaderComponent/>
 
-        <MyContext.Provider value={
-            {
-                userStore: {
-                    allUsers:users,
-                    setFavoriteUser: (obj:IUserModel)=> setFavoriteUser(obj),
-            },
-               postStore:{
-                    allPosts:posts
-               }
-        }
-        }>
-
             <Outlet/>
-        </MyContext.Provider>
-
             <hr/>
-        {favoriteUserState && <div>{favoriteUserState.email}</div>}
+        {favoriteUser && <div>{favoriteUser.email}</div>}
             <hr/>
 
     </>

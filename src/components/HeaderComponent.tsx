@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Link} from "react-router-dom";
-import {MyContext, useContextProvider} from "../context/ContextProvider";
 
 const HeaderComponent = () => {
 
