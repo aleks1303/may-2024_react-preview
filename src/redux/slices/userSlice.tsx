@@ -1,25 +1,34 @@
 import {IUser} from "../../models/IUser";
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isFulfilled, PayloadAction} from "@reduxjs/toolkit";
 import {userService} from "../../services/api.service";
 import {AxiosError} from "axios";
 
 type UsersSliceType ={
-    users:IUser[]
+    users:IUser[],
+
+    // це синхронна дія для reducers
+    isLoaded:boolean
 }
 
 const userInitState:UsersSliceType ={
-    users:[]
+    users:[],
+    isLoaded:false
+
+
 }
 
-// створюємо функцію
-// createAsyncThunk() - асинхронний перетворювач
-// він визначає асинхронну поведінку
+
 const loadUsers = createAsyncThunk(
     'userSlice/loadUsers',
     async (arg, thunkAPI) => {
         try{
             const users = await userService.getAll();
-            console.log(users)
+            // тут викликаємо цю функцію через thunkAPI
+            // поміняти на true
+            // це показує що сторінка завантажується
+            // цю функуцію можна дублювати в різні такі функції
+            // цю функцію також можна використовувати іншим шляхом у extraReducer - addMatcher
+            // thunkAPI.dispatch(userActions.changeLoadState(true))
             return thunkAPI.fulfillWithValue(users);
         } catch (e){
             const error = e as AxiosError;
@@ -31,13 +40,14 @@ const loadUsers = createAsyncThunk(
 export const userSlice = createSlice({
     name:"userSlice",
     initialState:userInitState,
-    // reducers приймає синхронні операції
-    reducers:{},
-    // extraReducers - приймає асинхронні операції
+    reducers:{
+        changeLoadState:(state, action:PayloadAction<boolean>) => {
+            state.isLoaded = action.payload
+        }
+    },
+
     extraReducers: builder =>
-        // addCase дозволяє сказати, що функція може працювати по різному
-        // якщо вона наповнина нормально - один принцип - fulfilled
-        // якщо з помилкою - інший принцип - try-catch, а також
+
         builder
             .addCase(loadUsers.fulfilled,
                 (state,action) =>{
@@ -45,8 +55,19 @@ export const userSlice = createSlice({
                 })
             .addCase(loadUsers.rejected,
                 (state, action) => {
-                    // якщо трапляється якась помилка
+
                 })
+            // використання isloaded
+            // відповідність до статусу вашої асинхронної функції
+            // isFulfilled - виконує як наглядач і зараз він наглядає за функцією loadUsers
+            // в цей метод також можна одночасно додавати різні функції,
+            // щоб в них спрацьовувала ця функція - а саме isloaded
+            // треба щось зробити з state and action
+
+            .addMatcher(isFulfilled(loadUsers), (state, action) =>{
+                // передаємо значення true
+                state.isLoaded = true
+            })
 
 });
 

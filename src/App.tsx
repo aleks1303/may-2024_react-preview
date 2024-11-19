@@ -6,7 +6,7 @@ import {postActions} from "./redux/slices/postSlice";
 
 const App:FC = () => {
 
-  const {userSlice:{users}, postSlice:{posts}} = useAppSelector(state => state);
+  const {userSlice:{users, isLoaded}, postSlice:{posts}} = useAppSelector(state => state);
 
   const dispatch = useAppDispatch();
   
@@ -18,8 +18,10 @@ const App:FC = () => {
   return (
     <div>
       {
-        users.map(user => <div key={user.id}>{user.name} : {user.email}</div>)
+       isLoaded? users.map(user => <div key={user.id}>{user.name} : {user.email}</div>) :
+           <h2>Loading.....</h2>
       }
+
       <hr/>
       {
         posts.map(post => <div key={post.id}>{post.title}</div>)
