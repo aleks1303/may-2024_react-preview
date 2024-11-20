@@ -5,14 +5,15 @@ import {AxiosError} from "axios";
 
 type UsersSliceType ={
     users:IUser[],
-
     // це синхронна дія для reducers
-    isLoaded:boolean
+    isLoaded:boolean,
+    user:IUser | null
 }
 
 const userInitState:UsersSliceType ={
     users:[],
-    isLoaded:false
+    isLoaded:false,
+    user:null
 
 
 }
@@ -36,7 +37,22 @@ const loadUsers = createAsyncThunk(
         }
 
     }
+);
+
+const loadUserById = createAsyncThunk(
+    'userSlice/loadById',
+    async (_:string | undefined, thunkAPI) => {
+   try {
+       const user = await userService.getById(_);
+       return thunkAPI.fulfillWithValue(user)
+   } catch (e) {
+       const error = e as AxiosError;
+       return thunkAPI.rejectWithValue(error.response?.data)
+   }
+    }
 )
+
+
 export const userSlice = createSlice({
     name:"userSlice",
     initialState:userInitState,
@@ -49,6 +65,9 @@ export const userSlice = createSlice({
     extraReducers: builder =>
 
         builder
+            .addCase(loadUserById.fulfilled, (state, action) => {
+                state.user = action.payload;
+            })
             .addCase(loadUsers.fulfilled,
                 (state,action) =>{
                     state.users = action.payload;
@@ -75,5 +94,6 @@ export const userSlice = createSlice({
 // це для асинхронних дій
 export const userActions = {
     ...userSlice.actions,
-    loadUsers
+    loadUsers,
+    loadUserById
 }
